@@ -2,9 +2,13 @@ import { PropsWithChildren, useEffect } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useSwipeable } from "react-swipeable";
 
-export interface BottomPaperProps { show: boolean, backgroundColor?: string, onClose: Function }
+export interface BottomPaperProps { 
+  show: boolean, 
+  backgroundColor?: string, 
+  onClose: Function 
+}
 
-export default ({ show, onClose, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
+const BottomPaper = ({ show, onClose, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
   const [{ translateY }, api] = useSpring(() => ({ translateY: 0, display: "block" }));
 
   const close = () => {
@@ -40,3 +44,5 @@ export default ({ show, onClose, backgroundColor, children }: PropsWithChildren<
     </animated.div>
   )
 }
+
+export default BottomPaper;
