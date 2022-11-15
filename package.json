@@ -1,0 +1,41 @@
+{
+  "name": "bottom-paper",
+  "version": "0.1.0",
+  "description": "A simple animated bottom paper library for the web.",
+  "keywords": [
+    "paper",
+    "bottom",
+    "ui",
+    "animated"
+  ],
+  "author": "Creative Solutions Group",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "rollup": "rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "8.3.3",
+    "@types/react": "^18.0.25",
+    "react": "^18.2.0",
+    "rollup": "^3.3.0",
+    "rollup-plugin-dts": "^5.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@react-spring/web": "^9.5.5",
+    "react-dom": "^18.2.0",
+    "react-particles": "^2.5.3",
+    "react-swipeable": "^7.0.0",
+    "tsparticles": "^2.5.3"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts"
+}
