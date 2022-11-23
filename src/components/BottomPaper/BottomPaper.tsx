@@ -3,12 +3,13 @@ import { useSpring, animated } from "@react-spring/web";
 import { useSwipeable } from "react-swipeable";
 
 export interface BottomPaperProps { 
-  show: boolean, 
+  show?: boolean, 
+  boxShadow?: string,
   backgroundColor?: string, 
   onClose: Function 
 }
 
-const BottomPaper = ({ show, onClose, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
+const BottomPaper = ({ show = true, onClose, boxShadow, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
   const [{ translateY }, api] = useSpring(() => ({ translateY: 0, display: "block" }));
 
   const close = () => {
