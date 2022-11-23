@@ -61,7 +61,7 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, childr
       display,
       backgroundColor: backgroundColor ?? "white",
       boxShadow: boxShadow ?? "0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%)",
-      position: "absolute",
+      position: "fixed",
       bottom: "0",
       left: "0",
       width: "100%",
