@@ -1,4 +1,4 @@
-import { MouseEventHandler, MutableRefObject, PropsWithChildren, useEffect, useRef } from "react";
+import { MouseEventHandler, MutableRefObject, PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useSwipeable } from "react-swipeable";
 
@@ -32,7 +32,8 @@ export interface BottomPaperProps {
 }
 
 const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
-  const [{ translateY }, api] = useSpring(() => ({ translateY: 0, display: "block" }));
+  const [{ translateY }, api] = useSpring(() => ({ translateY: 0 }));
+  const [display, setDisplay] = useState(show ? "block" : "none");
   const box = useRef<HTMLDivElement>(null);
   useOutsideClick(onClose, box);
 
@@ -40,8 +41,13 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, childr
     onClose();
   }
 
+  const closeAnimation = async () => {
+    await Promise.all(api.start({ translateY: show ? 0 : 1000 }));
+    setDisplay(show ? "block" : "none");
+  }
+
   useEffect(() => {
-    api.start({ translateY: show ? 0 : 1000, display: show ? "block" : "none" });
+    closeAnimation();
   }, [show])
 
   const handlers = useSwipeable({
@@ -51,6 +57,7 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, childr
   return (
     <animated.div {...handlers} style={{
       translateY,
+      display,
       backgroundColor: backgroundColor ?? "white",
       boxShadow: boxShadow ?? "0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%)",
       position: "absolute",
