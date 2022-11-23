@@ -41,13 +41,14 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, childr
     onClose();
   }
 
-  const closeAnimation = async () => {
+  const animation = async () => {
+    setDisplay("block");
     await Promise.all(api.start({ translateY: show ? 0 : 1000 }));
     setDisplay(show ? "block" : "none");
   }
 
   useEffect(() => {
-    closeAnimation();
+    animation();
   }, [show])
 
   const handlers = useSwipeable({
