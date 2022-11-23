@@ -12,12 +12,10 @@ const BottomPaper = ({ show, onClose, backgroundColor, children }: PropsWithChil
   const [{ translateY }, api] = useSpring(() => ({ translateY: 0, display: "block" }));
 
   const close = () => {
-    console.log("Closing1")
     onClose();
   }
 
   useEffect(() => {
-    console.log("Closing")
     api.start({ translateY: show ? 0 : 1000, display: show ? "block" : "none" });
   }, [show])
 
@@ -28,7 +26,8 @@ const BottomPaper = ({ show, onClose, backgroundColor, children }: PropsWithChil
   return (
     <animated.div {...handlers} style={{
       translateY,
-      backgroundColor,
+      backgroundColor: backgroundColor ?? "white",
+      boxShadow: "0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%)",
       position: "absolute",
       bottom: "0",
       left: "0",
