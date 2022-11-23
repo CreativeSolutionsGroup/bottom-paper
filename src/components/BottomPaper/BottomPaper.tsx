@@ -12,10 +12,12 @@ const BottomPaper = ({ show, onClose, backgroundColor, children }: PropsWithChil
   const [{ translateY }, api] = useSpring(() => ({ translateY: 0, display: "block" }));
 
   const close = () => {
+    console.log("Closing1")
     onClose();
   }
 
   useEffect(() => {
+    console.log("Closing")
     api.start({ translateY: show ? 0 : 1000, display: show ? "block" : "none" });
   }, [show])
 
@@ -31,7 +33,7 @@ const BottomPaper = ({ show, onClose, backgroundColor, children }: PropsWithChil
       bottom: "0",
       left: "0",
       width: "100%",
-      zIndex: "9999",
+      zIndex: "1000",
       height: "60vh",
       borderTopLeftRadius: "20px",
       borderTopRightRadius: "20px",
