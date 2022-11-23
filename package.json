@@ -1,8 +1,5 @@
 {
   "name": "@creativesolutionsgroup/bottom-paper",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/creativesolutionsgroup"
-  },
   "version": "0.1.2-7",
   "description": "A simple animated bottom paper library for the web.",
   "keywords": [

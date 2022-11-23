@@ -1,16 +1,40 @@
-import { PropsWithChildren, useEffect } from "react";
+import { MouseEventHandler, MutableRefObject, PropsWithChildren, useEffect, useRef } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useSwipeable } from "react-swipeable";
 
-export interface BottomPaperProps { 
-  show?: boolean, 
-  boxShadow?: string,
-  backgroundColor?: string, 
-  onClose: Function 
+/**
+ * 
+ * @param onClose
+ * @param ref should be of type MutableRefObject<HTMLDivElement> but ts complains.
+ */
+const useOutsideClick = (onClose: Function, ref: any) => {
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEventHandler<HTMLButtonElement>) => {
+      // @ts-ignore
+      if (ref.current && !ref.current.contains(event.target)) {
+        onClose && onClose();
+      }
+    };
+    // @ts-ignore
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      // @ts-ignore
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, [onClose]);
 }
 
-const BottomPaper = ({ show = true, onClose, boxShadow, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
+export interface BottomPaperProps {
+  show?: boolean,
+  boxShadow?: string,
+  backgroundColor?: string,
+  onClose: Function
+}
+
+const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
   const [{ translateY }, api] = useSpring(() => ({ translateY: 0, display: "block" }));
+  const box = useRef<HTMLDivElement>(null);
+  useOutsideClick(onClose, box);
 
   const close = () => {
     onClose();
@@ -39,9 +63,11 @@ const BottomPaper = ({ show = true, onClose, boxShadow, backgroundColor, childre
       borderTopRightRadius: "20px",
       overflow: "hidden"
     }}>
-      <div style={{ zIndex: 1001, borderRadius: "10%", backgroundColor: "gray", width: "10%", height: 4, marginLeft: "auto", marginRight: "auto", marginTop: 10 }} />
-      <div style={{ position: "relative", padding: "1rem", zIndex: 1002 }}>
-        {children}
+      <div ref={box} style={{ width: "100%", height: "100%" }}>
+        <div style={{ zIndex: 1001, borderRadius: "20px", backgroundColor: "gray", width: "10%", height: 4, marginLeft: "auto", marginRight: "auto", marginTop: 10 }} />
+        <div style={{ position: "relative", padding: "1rem", zIndex: 1002 }}>
+          {children}
+        </div>
       </div>
     </animated.div>
   )
