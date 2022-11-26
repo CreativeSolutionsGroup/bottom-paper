@@ -1,6 +1,5 @@
-import { MouseEventHandler, MutableRefObject, PropsWithChildren, useEffect, useRef, useState } from "react";
+import { MouseEventHandler, PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
-import { useSwipeable } from "react-swipeable";
 import { useDrag } from "@use-gesture/react";
 
 /**
