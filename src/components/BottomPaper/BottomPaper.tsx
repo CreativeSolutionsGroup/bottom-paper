@@ -1,10 +1,10 @@
 import { MouseEventHandler, MutableRefObject, PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useSwipeable } from "react-swipeable";
+import { useDrag } from "@use-gesture/react";
 
 /**
- * 
- * @param onClose
+ * @param onClose the function activated on the close event.
  * @param ref should be of type MutableRefObject<HTMLDivElement> but ts complains.
  */
 const useOutsideClick = (onClose: Function, ref: any) => {
@@ -28,11 +28,12 @@ export interface BottomPaperProps {
   show?: boolean,
   boxShadow?: string,
   backgroundColor?: string,
+  height?: string,
   onClose: Function
 }
 
-const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, children }: PropsWithChildren<BottomPaperProps>) => {
-  const [{ translateY }, api] = useSpring(() => ({ translateY: 0 }));
+const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, height, children }: PropsWithChildren<BottomPaperProps>) => {
+  const [{ y }, api] = useSpring(() => ({ y: 0 }));
   const [display, setDisplay] = useState(show ? "block" : "none");
   const box = useRef<HTMLDivElement>(null);
   useOutsideClick(onClose, box);
@@ -41,23 +42,25 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, childr
     onClose();
   }
 
+  const bind = useDrag(({ active, movement: [_, my], direction: [yDir], cancel }) => {
+    const elemHeight = box.current?.clientHeight!;
+    const calcHeight: number = active ? my : 0;
+
+    if (active && my > elemHeight / 2) { cancel(); close() };
+    api.start({ y: calcHeight });
+  }, { axis: "y" })
+
   const animation = async () => {
     setDisplay("block");
-    await Promise.all(api.start({ translateY: show ? 0 : 1000 }));
+    await Promise.all(api.start({ y: show ? 0 : 500 }));
     setDisplay(show ? "block" : "none");
   }
 
-  useEffect(() => {
-    animation();
-  }, [show])
-
-  const handlers = useSwipeable({
-    onSwipedDown: close
-  })
+  useEffect(() => { animation() }, [show])
 
   return (
-    <animated.div {...handlers} style={{
-      translateY,
+    <animated.div {...bind()} style={{
+      y,
       display,
       backgroundColor: backgroundColor ?? "white",
       boxShadow: boxShadow ?? "0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%)",
@@ -66,10 +69,11 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, childr
       left: "0",
       width: "100%",
       zIndex: "1000",
-      height: "60vh",
+      height: height ?? "60vh",
       borderTopLeftRadius: "20px",
       borderTopRightRadius: "20px",
-      overflow: "hidden"
+      overflow: "hidden",
+      touchAction: "none",
     }}>
       <div ref={box} style={{ width: "100%", height: "100%" }}>
         <div style={{ zIndex: 1001, borderRadius: "20px", backgroundColor: "gray", width: "10%", height: 4, marginLeft: "auto", marginRight: "auto", marginTop: 10 }} />
