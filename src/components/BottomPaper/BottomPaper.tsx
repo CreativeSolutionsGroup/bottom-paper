@@ -61,6 +61,7 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, height
     <animated.div {...bind()} style={{
       y,
       display,
+      height,
       backgroundColor: backgroundColor ?? "white",
       boxShadow: boxShadow ?? "0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%)",
       position: "fixed",
@@ -68,7 +69,6 @@ const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, height
       left: "0",
       width: "100%",
       zIndex: "1000",
-      height: height ?? "60vh",
       borderTopLeftRadius: "20px",
       borderTopRightRadius: "20px",
       overflow: "hidden",
