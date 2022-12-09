@@ -32,10 +32,24 @@ export interface BottomPaperProps {
 }
 
 const BottomPaper = ({ show = false, onClose, boxShadow, backgroundColor, height, children }: PropsWithChildren<BottomPaperProps>) => {
+  // The last Y scroll position.
+  // This helps us set the fixed position bug.
+  const [last_scroll, set_last_scroll] = useState(window.scrollY);
   const [{ y }, api] = useSpring(() => ({ y: 0 }));
   const [display, setDisplay] = useState(show ? "block" : "none");
   const box = useRef<HTMLDivElement>(null);
   useOutsideClick(onClose, box);
+
+  useEffect(() => {
+    let scroll = show ? window.scrollY : last_scroll;
+    set_last_scroll(scroll);
+    document.body.style.top = show ? `-${window.scrollY}px` : "";
+
+    document.body.style.position = show ? "fixed" : "";
+    document.body.style.overflow = show ? "hidden" : "scroll";
+    document.body.style.overscrollBehaviorY = show ? "none" : "";
+    !show && window.scrollTo(-1, scroll);
+  }, [show])
 
   const close = () => {
     onClose();
